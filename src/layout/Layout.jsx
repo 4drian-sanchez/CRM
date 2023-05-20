@@ -8,7 +8,7 @@ export const Layout = () => {
         <div className="md:flex md:min-h-screen">
 
             <aside className="md:w-2/5 lg:w-1/4 bg-blue-900 px-5 py-10">
-                <h2 className="text-3xl text-center text-white font-bold">CRM de clientes</h2>
+                <h1 className="text-3xl text-center text-white font-bold">CRM de clientes</h1>
 
                 <nav className="mt-10">
 
