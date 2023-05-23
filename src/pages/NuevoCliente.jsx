@@ -1,24 +1,28 @@
-import { useNavigate, Form, useActionData } from 'react-router-dom'
+import { useNavigate, Form, useActionData, redirect } from 'react-router-dom'
 import { Formulario, Error } from '../components'
-
+import { nuevoCliente } from '../data/data';
 
 export const action = async ( {request} ) => {
   const formData = await request.formData();
+  const regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+  const email = formData.get('email');
 
  /* El Object.formEntries() toma una lista de pares clave-valor y devuelve
   un nuevo objeto cuyas propiedades vienen dadas por esas entradas. */
   const datos = Object.fromEntries(formData);
 
   const errores = [];
-  if( Object.values(datos).includes('') )  {
-    errores.push('Todos los campos son obligatorios')
-  }
-
+  if( Object.values(datos).includes('') ) errores.push('Todos los campos son obligatorios')
+  if(!regex.test(email)) errores.push('El email no es valido')
   if( Object.keys(errores).length ) {
     return errores
   }
-  return null;
+
+  await nuevoCliente( datos )
+
+  return redirect('/');
 }
+
 export const NuevoCliente = () => {
 
   const navigate = useNavigate();
@@ -38,10 +42,12 @@ export const NuevoCliente = () => {
 
       <div className="mt-10 shadow-md rounded-md px-5 py-10 md:w3/4 mx-auto bg-white">
         {
-          errores?.length && errores.map( (error, i ) => <Error key={i}>Todos los campos son obligatorios</Error>)
+          /* Optional chaining: Devuelve undefined si no existe la propiedad */
+          errores?.length && errores.map( (error, i ) => <Error key={i}>{ error }</Error>)
         }
         <Form
           method="post"
+          noValidate
         >
           <Formulario />
           <input

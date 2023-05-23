@@ -1,0 +1,12 @@
+{
+  "clientes": [
+    {
+      "nombre": "adrian",
+      "empresa": "codigo con adrian",
+      "email": "adrian.s.duque@gmail.com",
+      "telefono": "04247366909",
+      "notas": "asdasd",
+      "id": 1
+    }
+  ]
+}
